@@ -8,6 +8,12 @@
       "dueDate": "2026-06-25T18:30:00.000Z"
     }
   ],
-  "bookmarks": [],
+  "bookmarks": [
+    {
+      "date": "2026-06-08T09:20:25.619Z",
+      "title": "AD1 100",
+      "url": "https://vhruoad1ci.sap.ssab.com:44300/sap/bc/ui2/flp?sap-client=100&sap-language=EN"
+    }
+  ],
   "scoreHistory": []
 }
