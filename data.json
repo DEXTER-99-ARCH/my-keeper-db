@@ -34,13 +34,5 @@
       "url": "https://vhruoad1ci.sap.ssab.com:44300/sap/bc/ui2/flp?sap-client=100&sap-language=EN"
     }
   ],
-  "scoreHistory": [
-    {
-      "task": "Role Build for Central Workshop",
-      "pts": 30,
-      "reason": "18 days early!",
-      "type": "early",
-      "date": "2026-06-08T09:26:02.195Z"
-    }
-  ]
+  "scoreHistory": []
 }
