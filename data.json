@@ -1,6 +1,11 @@
 {
   "notes": [
     {
+      "date": "2026-06-08T09:35:58.341Z",
+      "title": "T-Code Access",
+      "content": "Access of T-code /SAPAPO/CDPSB0 to Nitesh and Geetha"
+    },
+    {
       "date": "2026-06-08T09:25:19.337Z",
       "title": "SSO Fix",
       "content": "SSO Login fixed for Megana"
