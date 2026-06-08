@@ -1,1 +1,13 @@
-{"notes":[],"tasks":[],"bookmarks":[],"scoreHistory":[]}
+{
+  "notes": [],
+  "tasks": [
+    {
+      "date": "2026-06-08T09:19:24.724Z",
+      "title": "Role Build for Central Workshop",
+      "done": false,
+      "dueDate": "2026-06-25T18:30:00.000Z"
+    }
+  ],
+  "bookmarks": [],
+  "scoreHistory": []
+}
