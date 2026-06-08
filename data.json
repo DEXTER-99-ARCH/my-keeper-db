@@ -1,1 +1,11 @@
-{"notes":[],"tasks":[],"bookmarks":[]}
+{
+  "notes": [
+    {
+      "date": "2026-06-08T07:14:53.983Z",
+      "title": "Hello",
+      "content": "Testing this note"
+    }
+  ],
+  "tasks": [],
+  "bookmarks": []
+}
