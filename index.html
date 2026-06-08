@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Notebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',system-ui,sans-serif;background:#fff9f0;color:#1a1a18;min-height:100vh}
+.app{max-width:680px;margin:0 auto;padding:1.5rem 1rem 4rem}
+
+/* header */
+.header{margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.logo{font-size:26px;font-weight:800;letter-spacing:-0.5px;display:inline-flex;align-items:center;gap:8px}
+.logo-icon{width:36px;height:36px;background:#ffda58;border-radius:12px;border:2px solid #1a1a18;display:inline-flex;align-items:center;justify-content:center;font-size:18px;transform:rotate(-4deg)}
+.logo em{color:#e55b30;font-style:normal}
+.header-right{display:flex;align-items:center;gap:8px}
+.config-btn{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;background:#fff;border:2px solid #1a1a18;border-radius:20px;padding:5px 12px;cursor:pointer;font-family:inherit;transition:transform 0.15s}
+.config-btn:hover{transform:scale(1.04)}
+
+/* points pill */
+.points-pill{display:flex;align-items:center;gap:6px;background:#fff;border:2px solid #1a1a18;border-radius:20px;padding:5px 14px;font-size:13px;font-weight:800;cursor:pointer;transition:transform 0.15s;box-shadow:2px 2px 0 #1a1a18}
+.points-pill:hover{transform:scale(1.04)}
+.points-val{color:#e55b30;font-size:16px}
+
+/* score panel */
+.score-panel{background:#fff;border:2px solid #1a1a18;border-radius:16px;box-shadow:4px 4px 0 #1a1a18;padding:1.25rem;margin-bottom:1.25rem;display:none}
+.score-panel.open{display:block}
+.score-panel h3{font-size:16px;font-weight:800;margin-bottom:1rem;display:flex;align-items:center;gap:6px}
+.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem}
+.score-card{border:2px solid #1a1a18;border-radius:12px;padding:10px 12px;text-align:center}
+.score-card .sc-val{font-size:22px;font-weight:800}
+.score-card .sc-label{font-size:11px;font-weight:700;color:#888;margin-top:2px}
+.sc-yellow{background:#ffda58}.sc-blue{background:#b5e8f7}.sc-pink{background:#f4b8e0}
+.rank-bar{background:#f5f5f3;border:2px solid #1a1a18;border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.rank-badge{font-size:26px}
+.rank-info .rank-title{font-size:15px;font-weight:800}
+.rank-info .rank-sub{font-size:12px;color:#888;font-weight:600}
+.progress-wrap{margin-top:8px}
+.progress-label{font-size:11px;font-weight:700;color:#aaa;margin-bottom:4px;display:flex;justify-content:space-between}
+.progress-bg{background:#e8e8e6;border-radius:20px;height:10px;border:1.5px solid #1a1a18;overflow:hidden}
+.progress-fill{height:100%;border-radius:20px;transition:width 0.4s}
+.history-list{margin-top:1rem;display:flex;flex-direction:column;gap:6px;max-height:180px;overflow-y:auto}
+.history-item{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;background:#f9f9f7;border:1.5px solid #e0e0e0;border-radius:8px;padding:6px 10px}
+.pts-chip{padding:2px 8px;border-radius:10px;border:1.5px solid #1a1a18;font-size:11px;font-weight:800}
+
+/* status */
+.status-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;font-size:12px;font-weight:600;color:#888}
+.status-left{display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:#ccc;border:1.5px solid #1a1a18}
+.dot.green{background:#82e0a8}.dot.red{background:#f88}.dot.yellow{background:#ffda58}
+.refresh-btn{background:none;border:none;cursor:pointer;font-size:12px;font-weight:700;color:#888;font-family:inherit;display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:8px}
+.refresh-btn:hover{background:#f0f0ee;color:#1a1a18}
+
+/* tabs */
+.tabs{display:flex;gap:8px;margin-bottom:1.25rem}
+.tab{flex:1;padding:10px 8px;border:2px solid #1a1a18;background:#fff;border-radius:14px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit;color:#888;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.15s}
+.tab:hover:not(.active){background:#f8f8f6;transform:translateY(-1px)}
+.tab.active.t-notes{background:#ffda58;color:#1a1a18;transform:translateY(-3px);box-shadow:3px 3px 0 #1a1a18}
+.tab.active.t-tasks{background:#b5e8f7;color:#1a1a18;transform:translateY(-3px);box-shadow:3px 3px 0 #1a1a18}
+.tab.active.t-bookmarks{background:#f4b8e0;color:#1a1a18;transform:translateY(-3px);box-shadow:3px 3px 0 #1a1a18}
+.badge{font-size:10px;font-weight:800;background:#1a1a18;color:#fff;padding:1px 6px;border-radius:10px;min-width:18px;text-align:center}
+
+/* add form */
+.add-form{background:#fff;border:2px solid #1a1a18;border-radius:16px;padding:1rem 1.25rem;margin-bottom:1.25rem;box-shadow:4px 4px 0 #1a1a18}
+.add-form input,.add-form textarea{width:100%;margin-bottom:8px;font-size:14px;font-family:inherit;border:2px solid #e0e0e0;border-radius:10px;padding:8px 12px;outline:none;transition:border 0.15s;background:#fafaf8}
+.add-form input:focus,.add-form textarea:focus{border-color:#1a1a18}
+.add-form textarea{height:72px;resize:vertical}
+.form-row{display:flex;gap:8px}
+.form-row input{flex:1;margin-bottom:8px}
+.btn-add{border:2px solid #1a1a18;border-radius:10px;padding:8px 18px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all 0.15s}
+.btn-add:hover{transform:translateY(-2px)}
+.btn-notes{background:#ffda58;color:#1a1a18;box-shadow:3px 3px 0 #1a1a18}
+.btn-tasks{background:#b5e8f7;color:#1a1a18;box-shadow:3px 3px 0 #1a1a18}
+.btn-bookmarks{background:#f4b8e0;color:#1a1a18;box-shadow:3px 3px 0 #1a1a18}
+
+/* date picker */
+.date-pick-btn{flex:1;display:flex;align-items:center;gap:8px;background:#fafaf8;border:2px dashed #ccc;border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700;font-family:inherit;color:#aaa;cursor:pointer;transition:all 0.15s}
+.date-pick-btn:hover,.date-pick-btn.active{border-color:#1a1a18;color:#1a1a18;background:#fff}
+.date-pick-btn.has-date{border-style:solid;border-color:#b5e8f7;background:#edfaff;color:#1a1a18}
+.date-clear-btn{background:none;border:2px solid #f4b8e0;border-radius:8px;padding:6px 8px;cursor:pointer;color:#e55b30;font-size:14px;display:flex;align-items:center;transition:all 0.15s}
+.date-clear-btn:hover{background:#fff0f0}
+
+/* calendar */
+.cal-popup{background:#fff;border:2px solid #1a1a18;border-radius:16px;box-shadow:5px 5px 0 #1a1a18;padding:1rem;margin-bottom:8px;position:relative;z-index:10}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-title{font-size:15px;font-weight:800;color:#1a1a18}
+.cal-nav{background:none;border:2px solid #1a1a18;border-radius:8px;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.12s;font-family:inherit}
+.cal-nav:hover{background:#ffda58;transform:scale(1.08)}
+.cal-dow{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;margin-bottom:4px}
+.cal-dow span{font-size:11px;font-weight:800;color:#aaa;padding:4px 0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;border-radius:9px;cursor:pointer;border:2px solid transparent;transition:all 0.12s;font-family:inherit;background:none}
+.cal-day:hover:not(.empty-day):not(.selected):not(.past){background:#fff9f0;border-color:#ffda58;transform:scale(1.1)}
+.cal-day.today{border-color:#b5e8f7;background:#edfaff}
+.cal-day.selected{background:#ffda58;border-color:#1a1a18;box-shadow:2px 2px 0 #1a1a18;transform:scale(1.08)}
+.cal-day.past{color:#ddd;cursor:default}
+.cal-day.empty-day{cursor:default}
+.cal-footer{margin-top:8px;text-align:center}
+.cal-today-btn{background:none;border:2px solid #1a1a18;border-radius:8px;padding:5px 18px;font-size:12px;font-weight:800;font-family:inherit;cursor:pointer;transition:all 0.15s}
+.cal-today-btn:hover{background:#f4b8e0}
+
+/* item cards */
+.items-list{display:flex;flex-direction:column;gap:10px}
+.item-card{background:#fff;border:2px solid #1a1a18;border-radius:14px;padding:0.9rem 1.1rem;display:flex;align-items:flex-start;gap:10px;box-shadow:3px 3px 0 #1a1a18;transition:transform 0.12s}
+.item-card:hover{transform:translateY(-2px)}
+.item-card.done-card{background:#f9fff9;border-color:#a0d8b0}
+.item-stripe{width:5px;border-radius:4px;align-self:stretch;flex-shrink:0}
+.stripe-notes{background:#ffda58}.stripe-tasks{background:#b5e8f7}.stripe-bookmarks{background:#f4b8e0}
+.stripe-done{background:#82e0a8}
+.item-body{flex:1;min-width:0}
+.item-title{font-size:14px;font-weight:700;word-break:break-word;line-height:1.4}
+.item-content{font-size:13px;color:#666;margin-top:4px;word-break:break-word;line-height:1.5}
+.item-url{font-size:12px;font-weight:600;color:#6b5ff8;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;display:flex;align-items:center;gap:4px}
+.item-meta{font-size:11px;color:#aaa;margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.item-right{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.completed-badge{background:#c8f0d8;color:#1a6b3c;border:1.5px solid #1a6b3c;border-radius:10px;font-size:11px;font-weight:800;padding:3px 10px;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.item-actions{display:flex;gap:2px}
+.icon-btn{background:none;border:none;cursor:pointer;color:#ccc;padding:5px;border-radius:8px;font-size:17px;display:flex;align-items:center;transition:all 0.12s}
+.icon-btn:hover{background:#fff0f0;color:#e55b30;transform:scale(1.15)}
+.checkbox{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:#6b5ff8}
+.due-tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;border:1.5px solid}
+.due-tag.upcoming{background:#edfaff;color:#1a8ab5;border-color:#b5e8f7}
+.due-tag.due-today{background:#ffda58;color:#1a1a18;border-color:#e0b800}
+.due-tag.overdue{background:#fff0f0;color:#e55b30;border-color:#f4b8e0}
+.pts-earned{font-size:11px;font-weight:800;color:#e55b30;display:flex;align-items:center;gap:3px}
+
+/* empty */
+.empty{text-align:center;padding:3rem 1rem;color:#ccc;font-size:14px;font-weight:600}
+.empty-icon{font-size:40px;margin-bottom:10px;display:block}
+
+/* config modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:100}
+.modal{background:#fff9f0;border:2px solid #1a1a18;border-radius:20px;padding:1.75rem;width:100%;max-width:380px;margin:1rem;box-shadow:6px 6px 0 #1a1a18}
+.modal h2{font-size:18px;font-weight:800;margin-bottom:4px}
+.modal p{font-size:12px;color:#999;margin-bottom:1.25rem;line-height:1.5}
+.modal label{font-size:12px;font-weight:700;color:#888;display:block;margin-bottom:3px;margin-top:10px;text-transform:uppercase;letter-spacing:0.5px}
+.modal input{width:100%;font-size:14px;font-family:inherit;border:2px solid #e0e0e0;border-radius:10px;padding:8px 12px;outline:none;background:#fff;transition:border 0.15s}
+.modal input:focus{border-color:#1a1a18}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem}
+.btn-ghost{background:none;border:2px solid #ccc;border-radius:10px;padding:8px 16px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;color:#888}
+.btn-ghost:hover{border-color:#1a1a18;color:#1a1a18}
+.btn-connect{background:#ffda58;color:#1a1a18;border:2px solid #1a1a18;border-radius:10px;padding:8px 18px;font-size:13px;font-weight:800;font-family:inherit;cursor:pointer;box-shadow:3px 3px 0 #1a1a18;display:flex;align-items:center;gap:6px;transition:all 0.15s}
+.btn-connect:hover{transform:translateY(-2px)}
+
+/* celebrate overlay */
+.celebrate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:300;pointer-events:none}
+.celebrate-box{background:#fff;border:3px solid #1a1a18;border-radius:20px;padding:1.5rem 2rem;text-align:center;box-shadow:6px 6px 0 #1a1a18;animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+.celebrate-box .cel-emoji{font-size:40px;display:block;margin-bottom:6px}
+.celebrate-box .cel-title{font-size:18px;font-weight:800;margin-bottom:4px}
+.celebrate-box .cel-pts{font-size:28px;font-weight:800;color:#e55b30}
+.celebrate-box .cel-msg{font-size:13px;color:#888;margin-top:4px;font-weight:600}
+@keyframes popIn{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* toast */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1a1a18;color:#fff;padding:9px 20px;border-radius:20px;font-size:13px;font-weight:700;font-family:inherit;z-index:200;opacity:0;transition:opacity 0.2s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <div class="logo">
+      <span class="logo-icon"><i class="ti ti-notebook" aria-hidden="true"></i></span>
+      <span>My <em>Notebook</em></span>
+    </div>
+    <div class="header-right">
+      <div class="points-pill" onclick="toggleScore()" title="Your productivity score">
+        ⚡ <span class="points-val" id="total-pts">0</span> pts
+      </div>
+      <button class="config-btn" onclick="openConfig()">
+        <i class="ti ti-settings" aria-hidden="true"></i> Configure
+      </button>
+    </div>
+  </div>
+
+  <!-- Score panel -->
+  <div class="score-panel" id="score-panel">
+    <h3>📊 Your Productivity Score</h3>
+    <div class="score-grid">
+      <div class="score-card sc-yellow"><div class="sc-val" id="sc-total">0</div><div class="sc-label">Total pts</div></div>
+      <div class="score-card sc-blue"><div class="sc-val" id="sc-done">0</div><div class="sc-label">Tasks done</div></div>
+      <div class="score-card sc-pink"><div class="sc-val" id="sc-early">0</div><div class="sc-label">Early finishes</div></div>
+    </div>
+    <div class="rank-bar" id="rank-bar"></div>
+    <div class="progress-wrap" id="progress-wrap"></div>
+    <div class="history-list" id="history-list"></div>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-left">
+      <span class="dot" id="sdot"></span>
+      <span id="stxt">Not connected — click Configure</span>
+    </div>
+    <button class="refresh-btn" onclick="fetchData(true)"><i class="ti ti-refresh" aria-hidden="true"></i> Sync</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab t-notes active" id="tab-notes" onclick="switchTab('notes')"><i class="ti ti-pencil" aria-hidden="true"></i> Notes <span class="badge" id="cnt-notes">0</span></button>
+    <button class="tab t-tasks" id="tab-tasks" onclick="switchTab('tasks')"><i class="ti ti-checkbox" aria-hidden="true"></i> Tasks <span class="badge" id="cnt-tasks">0</span></button>
+    <button class="tab t-bookmarks" id="tab-bookmarks" onclick="switchTab('bookmarks')"><i class="ti ti-bookmark" aria-hidden="true"></i> Saves <span class="badge" id="cnt-bookmarks">0</span></button>
+  </div>
+
+  <div class="add-form" id="form-notes">
+    <input type="text" id="note-title" placeholder="✏️  Note title…" />
+    <textarea id="note-body" placeholder="What's on your mind?"></textarea>
+    <button class="btn-add btn-notes" onclick="addItem('notes')"><i class="ti ti-plus" aria-hidden="true"></i> Add note</button>
+  </div>
+
+  <div class="add-form" id="form-tasks" style="display:none">
+    <input type="text" id="task-title" placeholder="☑️  What needs doing?" />
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;position:relative">
+      <button class="date-pick-btn" id="date-pick-btn" onclick="toggleCal(event)" type="button">
+        <i class="ti ti-calendar" aria-hidden="true"></i>
+        <span id="date-pick-label">Pick a target date</span>
+        <i class="ti ti-chevron-down" aria-hidden="true" style="margin-left:auto;font-size:13px"></i>
+      </button>
+      <button class="date-clear-btn" id="date-clear-btn" onclick="clearDate()" style="display:none" title="Clear date">
+        <i class="ti ti-x" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="cal-popup" id="cal-popup" style="display:none">
+      <div class="cal-header">
+        <button class="cal-nav" onclick="shiftMonth(-1)"><i class="ti ti-chevron-left"></i></button>
+        <span class="cal-title" id="cal-title"></span>
+        <button class="cal-nav" onclick="shiftMonth(1)"><i class="ti ti-chevron-right"></i></button>
+      </div>
+      <div class="cal-dow"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="cal-footer"><button class="cal-today-btn" onclick="goToday()">Today</button></div>
+    </div>
+    <button class="btn-add btn-tasks" onclick="addItem('tasks')"><i class="ti ti-plus" aria-hidden="true"></i> Add task</button>
+  </div>
+
+  <div class="add-form" id="form-bookmarks" style="display:none">
+    <div class="form-row">
+      <input type="text" id="bm-title" placeholder="🔖  Title" />
+      <input type="url" id="bm-url" placeholder="https://…" />
+    </div>
+    <button class="btn-add btn-bookmarks" onclick="addItem('bookmarks')"><i class="ti ti-plus" aria-hidden="true"></i> Save link</button>
+  </div>
+
+  <div class="items-list" id="list"></div>
+</div>
+
+<!-- Config modal -->
+<div class="overlay" id="cfg-modal" style="display:none">
+  <div class="modal">
+    <h2><i class="ti ti-brand-github" aria-hidden="true"></i> GitHub setup</h2>
+    <p>Your token stays in memory only — never stored anywhere.</p>
+    <label>Personal access token (PAT)</label>
+    <input type="password" id="cfg-token" placeholder="ghp_…" />
+    <label>GitHub username</label>
+    <input type="text" id="cfg-owner" placeholder="your-username" />
+    <label>Repository name</label>
+    <input type="text" id="cfg-repo" placeholder="my-notebook" />
+    <label>File path</label>
+    <input type="text" id="cfg-path" placeholder="data.json" />
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeConfig()">Cancel</button>
+      <button class="btn-connect" onclick="saveConfig()"><i class="ti ti-plug" aria-hidden="true"></i> Connect</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let cfg={token:'',owner:'',repo:'',path:'data.json'};
+let db={notes:[],tasks:[],bookmarks:[],scoreHistory:[]};
+let sha=null, activeTab='notes', saving=false;
+
+// ── Points system ──────────────────────────────────────
+const RANKS=[
+  {min:0,  max:49,  emoji:'🐣', title:'Just hatched',   color:'#ccc'},
+  {min:50, max:149, emoji:'🌱', title:'Getting started', color:'#82e0a8'},
+  {min:150,max:299, emoji:'⚡', title:'On a roll',       color:'#ffda58'},
+  {min:300,max:499, emoji:'🔥', title:'On fire!',        color:'#e55b30'},
+  {min:500,max:799, emoji:'🚀', title:'Rocket mode',     color:'#6b5ff8'},
+  {min:800,max:Infinity,emoji:'👑',title:'Productivity King',color:'#e55b30'},
+];
+
+function calcPoints(task, completedAt){
+  let pts = 10; // base for completing
+  if(!task.dueDate) return {pts, reason:'Task completed', type:'normal'};
+  const due=new Date(task.dueDate); due.setHours(23,59,59,0);
+  const done=new Date(completedAt); done.setHours(0,0,0,0);
+  const dueMid=new Date(task.dueDate); dueMid.setHours(0,0,0,0);
+  const diffDays=Math.round((dueMid-done)/(1000*60*60*24));
+  if(diffDays>3){pts=30;return{pts,reason:`${diffDays} days early!`,type:'early'};}
+  if(diffDays>=1&&diffDays<=3){pts=20;return{pts,reason:`${diffDays} day${diffDays>1?'s':''} early`,type:'early'};}
+  if(diffDays===0){pts=15;return{pts,reason:'Done on due date',type:'ontime'};}
+  // overdue
+  const lateDays=Math.abs(diffDays);
+  pts=Math.max(2,10-lateDays*2);
+  return{pts,reason:`${lateDays} day${lateDays>1?'s':''} late`,type:'late'};
+}
+
+function totalPoints(){return (db.scoreHistory||[]).reduce((s,h)=>s+h.pts,0);}
+
+function getRank(pts){return RANKS.find(r=>pts>=r.min&&pts<=r.max)||RANKS[0];}
+
+function renderScore(){
+  const total=totalPoints();
+  document.getElementById('total-pts').textContent=total;
+  document.getElementById('sc-total').textContent=total;
+  const done=(db.scoreHistory||[]).length;
+  document.getElementById('sc-done').textContent=done;
+  const early=(db.scoreHistory||[]).filter(h=>h.type==='early').length;
+  document.getElementById('sc-early').textContent=early;
+  const rank=getRank(total);
+  const nextRank=RANKS[RANKS.indexOf(rank)+1];
+  document.getElementById('rank-bar').innerHTML=`
+    <span class="rank-badge">${rank.emoji}</span>
+    <div class="rank-info">
+      <div class="rank-title">${rank.title}</div>
+      <div class="rank-sub">${nextRank?`${nextRank.min-total} pts to "${nextRank.title}"`:'You are at the top! 👑'}</div>
+    </div>`;
+  if(nextRank){
+    const pct=Math.round(((total-rank.min)/(nextRank.min-rank.min))*100);
+    document.getElementById('progress-wrap').innerHTML=`
+      <div class="progress-label"><span>Progress to next rank</span><span>${pct}%</span></div>
+      <div class="progress-bg"><div class="progress-fill" style="width:${pct}%;background:${rank.color}"></div></div>`;
+  } else {document.getElementById('progress-wrap').innerHTML='';}
+  const hist=(db.scoreHistory||[]).slice().reverse().slice(0,10);
+  document.getElementById('history-list').innerHTML=hist.length?hist.map(h=>{
+    const chipColor=h.type==='early'?'#c8f0d8':h.type==='ontime'?'#ffda58':'#fff0f0';
+    const chipBorder=h.type==='early'?'#1a6b3c':h.type==='ontime'?'#e0b800':'#e55b30';
+    const chipText=h.type==='early'?'#1a6b3c':h.type==='ontime'?'#856000':'#e55b30';
+    return`<div class="history-item"><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(h.task)}</span><span class="pts-chip" style="background:${chipColor};border-color:${chipBorder};color:${chipText}">+${h.pts} — ${h.reason}</span></div>`;
+  }).join(''):'<div style="text-align:center;color:#ccc;font-size:12px;padding:8px">Complete tasks to build history!</div>';
+}
+
+function toggleScore(){
+  const p=document.getElementById('score-panel');
+  p.classList.toggle('open');
+  if(p.classList.contains('open')) renderScore();
+}
+
+function showCelebrate(pts, reason, type){
+  const emojis={early:'🎉',ontime:'✅',normal:'👍',late:'💪'};
+  const msgs={early:'You beast! Way ahead of schedule!',ontime:'Right on time — nice work!',normal:'Task crushed!',late:'Better late than never — keep going!'};
+  const el=document.createElement('div');
+  el.className='celebrate';
+  el.innerHTML=`<div class="celebrate-box"><span class="cel-emoji">${emojis[type]||'🎉'}</span><div class="cel-title">${msgs[type]||'Done!'}</div><div class="cel-pts">+${pts} pts</div><div class="cel-msg">${reason}</div></div>`;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),2200);
+}
+
+// ── Calendar ────────────────────────────────────────────
+let calDate=new Date(), selectedDate=null;
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function toggleCal(e){
+  e.stopPropagation();
+  const p=document.getElementById('cal-popup');
+  const open=p.style.display==='none';
+  p.style.display=open?'':'none';
+  document.getElementById('date-pick-btn').classList.toggle('active',open);
+  if(open) renderCal();
+}
+function closeCal(){document.getElementById('cal-popup').style.display='none';document.getElementById('date-pick-btn').classList.remove('active');}
+document.addEventListener('click',e=>{
+  const pop=document.getElementById('cal-popup'),btn=document.getElementById('date-pick-btn');
+  if(pop&&!pop.contains(e.target)&&!btn.contains(e.target)) closeCal();
+});
+function shiftMonth(d){calDate=new Date(calDate.getFullYear(),calDate.getMonth()+d,1);renderCal();}
+function goToday(){calDate=new Date();selectDate(new Date());}
+function renderCal(){
+  document.getElementById('cal-title').textContent=`${MONTHS[calDate.getMonth()]} ${calDate.getFullYear()}`;
+  const today=new Date();today.setHours(0,0,0,0);
+  const first=new Date(calDate.getFullYear(),calDate.getMonth(),1);
+  const last=new Date(calDate.getFullYear(),calDate.getMonth()+1,0);
+  let html='';
+  for(let i=0;i<first.getDay();i++) html+=`<div class="cal-day empty-day"></div>`;
+  for(let d=1;d<=last.getDate();d++){
+    const day=new Date(calDate.getFullYear(),calDate.getMonth(),d);
+    const isPast=day<today,isToday=day.getTime()===today.getTime(),isSel=selectedDate&&day.getTime()===selectedDate.getTime();
+    const cls=['cal-day',isPast?'past':'',isToday?'today':'',isSel?'selected':''].filter(Boolean).join(' ');
+    html+=`<div class="${cls}" ${isPast?'':` onclick="selectDate(new Date(${day.getTime()}))"`}>${d}</div>`;
+  }
+  document.getElementById('cal-grid').innerHTML=html;
+}
+function selectDate(d){
+  selectedDate=d;d.setHours(0,0,0,0);
+  const label=d.toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'});
+  document.getElementById('date-pick-btn').classList.add('has-date');
+  document.getElementById('date-pick-label').textContent='📅 '+label;
+  document.getElementById('date-clear-btn').style.display='flex';
+  renderCal();setTimeout(closeCal,300);
+}
+function clearDate(){
+  selectedDate=null;
+  document.getElementById('date-pick-label').textContent='Pick a target date';
+  document.getElementById('date-pick-btn').classList.remove('has-date');
+  document.getElementById('date-clear-btn').style.display='none';
+}
+
+function dueTag(dueDate){
+  if(!dueDate) return '';
+  const due=new Date(dueDate);due.setHours(0,0,0,0);
+  const today=new Date();today.setHours(0,0,0,0);
+  const diff=Math.round((due-today)/(1000*60*60*24));
+  if(diff<0) return `<span class="due-tag overdue"><i class="ti ti-alarm" style="font-size:10px"></i> Overdue by ${Math.abs(diff)}d</span>`;
+  if(diff===0) return `<span class="due-tag due-today"><i class="ti ti-alarm" style="font-size:10px"></i> Due today!</span>`;
+  return `<span class="due-tag upcoming"><i class="ti ti-calendar" style="font-size:10px"></i> Due ${due.toLocaleDateString('en',{month:'short',day:'numeric'})}</span>`;
+}
+
+// ── GitHub ──────────────────────────────────────────────
+const GH=()=>`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
+const HDR=()=>({Authorization:`Bearer ${cfg.token}`,Accept:'application/vnd.github+json'});
+
+function openConfig(){
+  document.getElementById('cfg-token').value=cfg.token;
+  document.getElementById('cfg-owner').value=cfg.owner;
+  document.getElementById('cfg-repo').value=cfg.repo;
+  document.getElementById('cfg-path').value=cfg.path||'data.json';
+  document.getElementById('cfg-modal').style.display='flex';
+}
+function closeConfig(){document.getElementById('cfg-modal').style.display='none';}
+async function saveConfig(){
+  cfg.token=document.getElementById('cfg-token').value.trim();
+  cfg.owner=document.getElementById('cfg-owner').value.trim();
+  cfg.repo=document.getElementById('cfg-repo').value.trim();
+  cfg.path=document.getElementById('cfg-path').value.trim()||'data.json';
+  closeConfig();await fetchData();
+}
+
+function setStatus(s,m){
+  document.getElementById('sdot').className='dot '+(s==='ok'?'green':s==='error'?'red':'yellow');
+  document.getElementById('stxt').textContent=m;
+}
+
+async function fetchData(manual=false){
+  if(!cfg.token||!cfg.owner||!cfg.repo)return;
+  if(manual)toast('Syncing… 🔄');
+  setStatus('yellow','Syncing…');
+  try{
+    const res=await fetch(GH(),{headers:HDR()});
+    if(res.status===404){db={notes:[],tasks:[],bookmarks:[],scoreHistory:[]};sha=null;setStatus('ok','Connected — ready');render();return;}
+    if(res.status===401)throw new Error('Invalid token');
+    if(!res.ok)throw new Error(`GitHub ${res.status}`);
+    const j=await res.json();sha=j.sha;
+    const bin=atob(j.content.replace(/\n/g,''));
+    const bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+    const parsed=JSON.parse(new TextDecoder().decode(bytes));
+    db={notes:parsed.notes||[],tasks:parsed.tasks||[],bookmarks:parsed.bookmarks||[],scoreHistory:parsed.scoreHistory||[]};
+    setStatus('ok',`Synced · ${new Date().toLocaleTimeString()}`);
+    render();renderScore();
+  }catch(e){setStatus('error',e.message);toast('❌ '+e.message);}
+}
+
+async function saveData(){
+  if(!cfg.token||!cfg.owner||!cfg.repo){toast('Not configured');return;}
+  if(saving)return;saving=true;setStatus('yellow','Saving…');
+  try{
+    const body={message:'Update notebook',content:btoa(unescape(encodeURIComponent(JSON.stringify(db,null,2))))};
+    if(sha)body.sha=sha;
+    const res=await fetch(GH(),{method:'PUT',headers:{...HDR(),'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(res.status===422)throw new Error('SHA mismatch — click Sync');
+    if(!res.ok){const e=await res.json();throw new Error(e.message||res.status);}
+    sha=(await res.json()).content.sha;
+    setStatus('ok',`Saved · ${new Date().toLocaleTimeString()}`);
+  }catch(e){setStatus('error','Save failed: '+e.message);toast('❌ '+e.message);}
+  finally{saving=false;}
+}
+
+// ── UI ──────────────────────────────────────────────────
+function switchTab(t){
+  activeTab=t;
+  ['notes','tasks','bookmarks'].forEach(x=>{
+    document.getElementById('tab-'+x).classList.toggle('active',x===t);
+    document.getElementById('form-'+x).style.display=x===t?'':'none';
+  });
+  render();
+}
+
+function render(){
+  ['notes','tasks','bookmarks'].forEach(t=>document.getElementById('cnt-'+t).textContent=db[t].length);
+  const el=document.getElementById('list'),items=db[activeTab];
+  if(!items.length){el.innerHTML=`<div class="empty"><span class="empty-icon">${activeTab==='notes'?'📝':activeTab==='tasks'?'✅':'🔖'}</span>Nothing here yet!</div>`;return;}
+  el.innerHTML=items.map((item,i)=>card(item,i)).join('');
+  document.getElementById('total-pts').textContent=totalPoints();
+}
+
+function card(item,i){
+  const date=item.date?new Date(item.date).toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'}):'';
+  const meta=`<div class="item-meta">${date}</div>`;
+  const del=`<button class="icon-btn" onclick="deleteItem(${i})" aria-label="Delete"><i class="ti ti-trash"></i></button>`;
+
+  if(activeTab==='notes'){
+    const stripe=`<div class="item-stripe stripe-notes"></div>`;
+    return`<div class="item-card">${stripe}<div class="item-body"><div class="item-title">${esc(item.title)}</div>${item.content?`<div class="item-content">${esc(item.content)}</div>`:''} ${meta}</div><div class="item-actions">${del}</div></div>`;
+  }
+
+  if(activeTab==='tasks'){
+    const isDone=!!item.done;
+    const stripe=`<div class="item-stripe ${isDone?'stripe-done':'stripe-tasks'}"></div>`;
+    const rightSide=isDone
+      ?`<div class="item-right">
+          <div class="completed-badge"><i class="ti ti-circle-check" style="font-size:12px"></i> Completed</div>
+          ${item.ptsEarned!=null?`<div class="pts-earned">⚡ +${item.ptsEarned} pts</div>`:''}
+          <div class="item-actions">${del}</div>
+        </div>`
+      :`<div class="item-right"><div class="item-actions">${del}</div></div>`;
+    const dueLine=!isDone&&item.dueDate?`<div style="margin-top:4px">${dueTag(item.dueDate)}</div>`:'';
+    const completedOn=isDone&&item.completedAt?`<span>Done ${new Date(item.completedAt).toLocaleDateString('en',{month:'short',day:'numeric'})}</span>`:'';
+    return`<div class="item-card${isDone?' done-card':''}">${stripe}
+      <input type="checkbox" class="checkbox" ${isDone?'checked':''} onchange="toggleTask(${i})"/>
+      <div class="item-body">
+        <div class="item-title">${esc(item.title)}</div>
+        <div class="item-meta">${completedOn||date}${dueLine}</div>
+      </div>
+      ${rightSide}
+    </div>`;
+  }
+
+  if(activeTab==='bookmarks'){
+    const stripe=`<div class="item-stripe stripe-bookmarks"></div>`;
+    return`<div class="item-card">${stripe}<div class="item-body"><div class="item-title">${esc(item.title)}</div>${item.url?`<div class="item-url" onclick="window.open('${esc(item.url)}','_blank')"><i class="ti ti-external-link" style="font-size:11px"></i> ${esc(item.url)}</div>`:''} ${meta}</div><div class="item-actions">${del}</div></div>`;
+  }
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+async function addItem(type){
+  let item={date:new Date().toISOString()};
+  if(type==='notes'){
+    const t=document.getElementById('note-title').value.trim();if(!t){toast('Give your note a title ✏️');return;}
+    item.title=t;item.content=document.getElementById('note-body').value.trim();
+    document.getElementById('note-title').value='';document.getElementById('note-body').value='';
+  } else if(type==='tasks'){
+    const t=document.getElementById('task-title').value.trim();if(!t){toast('Describe the task ☑️');return;}
+    item.title=t;item.done=false;
+    if(selectedDate)item.dueDate=selectedDate.toISOString();
+    document.getElementById('task-title').value='';clearDate();
+  } else {
+    const t=document.getElementById('bm-title').value.trim(),u=document.getElementById('bm-url').value.trim();
+    if(!t||!u){toast('Need both title and URL 🔖');return;}
+    item.title=t;item.url=u;
+    document.getElementById('bm-title').value='';document.getElementById('bm-url').value='';
+  }
+  db[type].unshift(item);render();await saveData();toast('✓ Saved!');
+}
+
+async function deleteItem(i){db[activeTab].splice(i,1);render();await saveData();toast('🗑️ Deleted');}
+
+async function toggleTask(i){
+  const task=db.tasks[i];
+  const wasDone=!!task.done;
+  task.done=!wasDone;
+  if(task.done){
+    const now=new Date().toISOString();
+    task.completedAt=now;
+    const {pts,reason,type}=calcPoints(task,now);
+    task.ptsEarned=pts;
+    if(!db.scoreHistory) db.scoreHistory=[];
+    db.scoreHistory.push({task:task.title,pts,reason,type,date:now});
+    render();renderScore();
+    showCelebrate(pts,reason,type);
+  } else {
+    // undo — remove last matching history entry
+    task.completedAt=null;task.ptsEarned=null;
+    const idx=(db.scoreHistory||[]).map(h=>h.task).lastIndexOf(task.title);
+    if(idx>-1) db.scoreHistory.splice(idx,1);
+    render();renderScore();
+  }
+  await saveData();
+}
+
+let tt;
+function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2500);}
+
+render();renderScore();
+</script>
+</body>
+</html>
