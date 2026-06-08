@@ -6,7 +6,14 @@
       "content": "SSO Login fixed for Megana"
     }
   ],
-  "tasks": [],
+  "tasks": [
+    {
+      "date": "2026-06-08T09:28:09.599Z",
+      "title": "Role Build for Central Workshop",
+      "done": false,
+      "dueDate": "2026-06-25T18:30:00.000Z"
+    }
+  ],
   "bookmarks": [
     {
       "date": "2026-06-08T09:23:10.204Z",
