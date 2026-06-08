@@ -8,12 +8,6 @@
   ],
   "tasks": [
     {
-      "date": "2026-06-08T09:33:13.772Z",
-      "title": "Test",
-      "done": false,
-      "dueDate": "2026-06-25T18:30:00.000Z"
-    },
-    {
       "date": "2026-06-08T09:28:09.599Z",
       "title": "Role Build for Central Workshop",
       "done": false,
