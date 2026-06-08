@@ -1,5 +1,11 @@
 {
-  "notes": [],
+  "notes": [
+    {
+      "date": "2026-06-08T09:25:19.337Z",
+      "title": "SSO Fix",
+      "content": "SSO Login fixed for Megana"
+    }
+  ],
   "tasks": [
     {
       "date": "2026-06-08T09:19:24.724Z",
