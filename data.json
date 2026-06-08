@@ -6,6 +6,12 @@
       "content": "Testing this note"
     }
   ],
-  "tasks": [],
+  "tasks": [
+    {
+      "date": "2026-06-08T07:15:39.630Z",
+      "title": "Task to connect Github and claude app",
+      "done": false
+    }
+  ],
   "bookmarks": []
 }
