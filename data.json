@@ -1,6 +1,11 @@
 {
   "notes": [
     {
+      "date": "2026-06-10T10:59:12.019Z",
+      "title": "Enhancement of Claude app",
+      "content": "1:- App is directly executable yes / no / factsheet\n2:- In Mass addition need to change template\n3:-"
+    },
+    {
       "date": "2026-06-10T09:09:45.186Z",
       "title": "Tcode Addition in Security Role",
       "content": "SM19 and SM20 t-code added in Security Admin Role for Development and Quality"
@@ -36,11 +41,6 @@
       "date": "2026-06-10T09:01:18.039Z",
       "title": "Security UAT Preparation File",
       "url": "https://claude.ai/artifacts/latest/019eb05f-6da5-75ef-be3b-9f42c269926b"
-    },
-    {
-      "date": "2026-06-08T09:20:25.619Z",
-      "title": "AD1 100",
-      "url": "https://vhruoad1ci.sap.ssab.com:44300/sap/bc/ui2/flp?sap-client=100&sap-language=EN"
     }
   ],
   "scoreHistory": [
