@@ -20,8 +20,10 @@
     {
       "date": "2026-06-08T09:28:09.599Z",
       "title": "Role Build for Central Workshop",
-      "done": false,
-      "dueDate": "2026-06-25T18:30:00.000Z"
+      "done": true,
+      "dueDate": "2026-06-25T18:30:00.000Z",
+      "completedAt": "2026-06-10T06:16:16.105Z",
+      "ptsEarned": 30
     }
   ],
   "bookmarks": [
@@ -51,5 +53,13 @@
       "url": "https://vhruoad1ci.sap.ssab.com:44300/sap/bc/ui2/flp?sap-client=100&sap-language=EN"
     }
   ],
-  "scoreHistory": []
+  "scoreHistory": [
+    {
+      "task": "Role Build for Central Workshop",
+      "pts": 30,
+      "reason": "16 days early!",
+      "type": "early",
+      "date": "2026-06-10T06:16:16.105Z"
+    }
+  ]
 }
